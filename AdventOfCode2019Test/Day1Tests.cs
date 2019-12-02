@@ -16,7 +16,7 @@ namespace AdventOfCode2019Test
         }
 
         [TestMethod]
-        public void Day1GetFuelRequiredForFuelExampples()
+        public void Day1GetFuelRequiredForFuelExamples()
         {
             Assert.AreEqual(0, Day1.GetFuelRequiredForFuel(2));
             Assert.AreEqual(312, Day1.GetFuelRequiredForFuel(654));
