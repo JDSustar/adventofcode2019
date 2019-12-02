@@ -48,49 +48,63 @@ namespace AdventOfCode2019
         public int[] Memory { get; private set; }
         public int[] OriginalMemory { get; private set; }
 
-        public IntCode(int[] memory, int noun, int verb)
+        public int InstructionPointer { get; private set; }
+
+        public IntCode(int[] memory)
+        {
+            Memory = memory;
+            OriginalMemory = memory;
+            InstructionPointer = 0;
+        }
+
+        public IntCode(int[] memory, int noun = 12, int verb = 2, int instructionPointer = 0)
         {
             Memory = memory;
             OriginalMemory = memory;
             Memory[1] = noun;
             Memory[2] = verb;
+            InstructionPointer = instructionPointer;
         }
 
         public void EvaluateCodes()
         {
-            int currentAddress = 0;
-            bool endFound = (Memory[currentAddress] == 99);
+            bool endFound = (Memory[InstructionPointer] == 99);
             
             while (!endFound)
             {
-                evaluateAddress(currentAddress);
-                currentAddress += 4;
-                endFound = (Memory[currentAddress] == 99);
+                endFound = !evaluateCurrentInstruction();
             }
         }
 
-        private void evaluateAddress(int address)
+        private bool evaluateCurrentInstruction()
         {
-            if (Memory[address] == 1)
+            if (Memory[InstructionPointer] == 1)
             {
-                int addend1 = Memory[Memory[address + 1]];
-                int addend2 = Memory[Memory[address + 2]];
-                int resultPosition = Memory[address + 3];
+                int addend1 = Memory[Memory[InstructionPointer + 1]];
+                int addend2 = Memory[Memory[InstructionPointer + 2]];
+                int resultPosition = Memory[InstructionPointer + 3];
 
                 Memory[resultPosition] = addend1 + addend2;
+                InstructionPointer += 4;
+                return true;
             }
-            else if (Memory[address] == 2)
+            else if (Memory[InstructionPointer] == 2)
             {
-                int factor1 = Memory[Memory[address + 1]];
-                int factor2 = Memory[Memory[address + 2]];
-                int resultPosition = Memory[address + 3];
+                int factor1 = Memory[Memory[InstructionPointer + 1]];
+                int factor2 = Memory[Memory[InstructionPointer + 2]];
+                int resultPosition = Memory[InstructionPointer + 3];
 
                 Memory[resultPosition] = factor1 * factor2;
+                InstructionPointer += 4;
+                return true;
             }
-            else if (Memory[address] == 99)
+            else if (Memory[InstructionPointer] == 99)
             {
-                return;
+                InstructionPointer += 1;
+                return false;
             }
+
+            throw new NotImplementedException("Unknown instruction type at current Instruction Pointer: " + InstructionPointer);
         }
 
     }
