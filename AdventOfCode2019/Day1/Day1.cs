@@ -14,7 +14,7 @@ namespace AdventOfCode2019
 
         public static int GetFuelRequiredForFuel(int fuel)
         {
-            int fuelRequired = fuel / 3 - 2;
+            int fuelRequired = GetFuelRequiredForMass(fuel);
 
             if (fuelRequired <= 0)
                 return 0;
