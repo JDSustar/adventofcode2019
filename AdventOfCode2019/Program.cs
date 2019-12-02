@@ -9,6 +9,9 @@ namespace AdventOfCode2019
             Logger.CURRENT_LOG_LEVEL = LogLevel.ANSWER;
             Day1.ExecuteStarOne();
             Day1.ExecuteStarTwo();
+            Day2.ExecuteStarOne();
+            Day2.ExecuteStarTwo();
+
         }
     }
 }
