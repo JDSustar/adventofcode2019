@@ -19,6 +19,15 @@ namespace AdventOfCode2019
 
             Logger.LogMessage(LogLevel.ANSWER, "3A: Closest Intersection: " + wp.GetClosestIntersectionDistance());
         }
+
+        public static void ExecuteStarTwo(string fileLocation = "Day3/Day3.txt")
+        {
+            string[] lines = File.ReadAllLines(fileLocation);
+
+            WirePanel wp = new WirePanel(lines[0], lines[1]);
+
+            Logger.LogMessage(LogLevel.ANSWER, "3A: Fewest Steps to Intersection: " + wp.GetFewestStepsIntersection());
+        }
     }
 
     public class WirePanel
@@ -55,7 +64,37 @@ namespace AdventOfCode2019
             return min;
         }
 
+        public int GetFewestStepsIntersection()
+        {
+            int min = Int32.MaxValue;
 
+            foreach (var wireIntersection in WireIntersections)
+            {
+                int numSteps = 0;
+                Tuple<int, int > currentPoint = new Tuple<int, int>(0, 0);
+
+                int i = 0;
+                while (!currentPoint.Equals(wireIntersection))
+                {
+                    currentPoint = WireOne.WirePoints[i++];
+                }
+
+                numSteps += i;
+
+                currentPoint = new Tuple<int, int>(0, 0);
+                int j = 0;
+                while (!currentPoint.Equals(wireIntersection))
+                {
+                    currentPoint = WireTwo.WirePoints[j++];
+                }
+
+                numSteps += j;
+
+                if (numSteps < min) min = numSteps;
+            }
+
+            return min;
+        }
     }
 
     public class Wire
