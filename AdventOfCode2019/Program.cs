@@ -11,7 +11,7 @@ namespace AdventOfCode2019
             Day1.ExecuteStarTwo();
             Day2.ExecuteStarOne();
             Day2.ExecuteStarTwo();
-
+            Day3.ExecuteStarOne();
         }
     }
 }
