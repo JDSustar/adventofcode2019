@@ -43,17 +43,19 @@ namespace AdventOfCode2019
 
         public int GetClosestIntersectionDistance()
         {
-            int min = Helper.GetManhattenDistance(WireIntersections.First().Item1, WireIntersections.First().Item2);
+            int min = Utilities.GetManhattenDistance(WireIntersections.First().Item1, WireIntersections.First().Item2);
 
             foreach (var wireIntersection in WireIntersections)
             {
-                int d = Helper.GetManhattenDistance(wireIntersection.Item1, wireIntersection.Item2);
+                int d = Utilities.GetManhattenDistance(wireIntersection.Item1, wireIntersection.Item2);
                 if (d < min)
                     min = d;
             }
 
             return min;
         }
+
+
     }
 
     public class Wire

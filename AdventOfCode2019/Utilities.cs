@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AdventOfCode2019
 {
-    public static class Helper
+    public static class Utilities
     {
         public static int GetManhattenDistance(int a, int b)
         {
