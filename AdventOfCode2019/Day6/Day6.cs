@@ -15,6 +15,15 @@ namespace AdventOfCode2019
             
             Logger.LogMessage(LogLevel.ANSWER, "6A: Total Orbits: " + objectMap.GetTotalOrbits());
         }
+
+        public static void ExecuteStarTwo(string fileLocation = "Day6/Day6.txt")
+        {
+            string[] lines = File.ReadAllLines(fileLocation);
+
+            var objectMap = new UniversalOrbitMap(lines);
+
+            Logger.LogMessage(LogLevel.ANSWER, "6A: Shortest Path: " + objectMap.OrbitTransfersRequired("YOU", "SAN"));
+        }
     }
 
     public class UniversalOrbitMap
@@ -41,27 +50,43 @@ namespace AdventOfCode2019
             OrbitObject endOrbitObject = ObjectsInSpace[end].ParentOrbitObject;
 
             visited.Add(startOrbitObject);
-            Queue<OrbitObject> objectsToVisit = new Queue<OrbitObject>();
-            objectsToVisit.Enqueue(startOrbitObject.ParentOrbitObject);
-            startOrbitObject.Moons.ForEach(m => objectsToVisit.Enqueue(m));
+
+            Queue<Tuple<OrbitObject, int>> objectsToVisit = new Queue<Tuple<OrbitObject, int>>();
+            objectsToVisit.Enqueue(new Tuple<OrbitObject, int>(startOrbitObject.ParentOrbitObject, 1));
+            startOrbitObject.Moons.ForEach(m => objectsToVisit.Enqueue(new Tuple<OrbitObject, int>(m.ParentOrbitObject, 1)));
 
             while (objectsToVisit.Count > 0)
             {
-                OrbitObject currentOrbitObject = objectsToVisit.Dequeue();
+                var currentOrbitObjectAndPathLength = objectsToVisit.Dequeue();
+                var currentOrbitObject = currentOrbitObjectAndPathLength.Item1;
+                var pathLength = currentOrbitObjectAndPathLength.Item2;
 
                 if (currentOrbitObject == endOrbitObject)
                 {
-                    return 1;
+                    return pathLength;
                 }
 
                 visited.Add(currentOrbitObject);
 
-                objectsToVisit.Enqueue(currentOrbitObject.ParentOrbitObject);
-                currentOrbitObject.Moons.ForEach(m => objectsToVisit.Enqueue(m));
+                if (!visited.Contains(currentOrbitObject.ParentOrbitObject) && currentOrbitObject.ParentOrbitObject != null)
+                {
+                    objectsToVisit.Enqueue(new Tuple<OrbitObject, int>(currentOrbitObject.ParentOrbitObject, pathLength + 1));
+                }
+
+
+                currentOrbitObject.Moons.ForEach(m =>
+                {
+                    if (!visited.Contains(m))
+                    {
+                        objectsToVisit.Enqueue(new Tuple<OrbitObject, int>(m, pathLength + 1));
+                    }
+                });
             }
 
-            return 0;
+            throw new Exception("Path from " + start + " to " + end + " not found.");
         }
+
+
 
         public UniversalOrbitMap(string[] mapStrings)
         {
