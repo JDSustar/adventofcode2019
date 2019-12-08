@@ -48,12 +48,15 @@ namespace AdventOfCode2019
 
         public int InstructionPointer { get; private set; }
 
+        public bool IsRunning { get; private set; }
+
         public string Output { get; private set; }
+
         public List<int> Input { get; private set; }
 
         public IntCodeMachine(int[] memory)
         {
-            Memory = memory;
+            Memory = new List<int>(memory).ToArray();
             InstructionPointer = 0;
             Output = "";
         }
@@ -62,22 +65,31 @@ namespace AdventOfCode2019
         {
             Memory[1] = noun;
             Memory[2] = verb;
-            Input = input.ToList();
+            Input = new List<int>(input);
         }
 
         public IntCodeMachine(int[] memory, int[] input) : this(memory)
         {
-            Input = input.ToList();
+            Input = new List<int>(input);
         }
 
         public void Run()
         {
-            bool endFound = (Memory[InstructionPointer] == 99);
+            IsRunning = true;
 
-            while (!endFound)
+            bool stopFound = (Memory[InstructionPointer] == 99);
+
+            while (!stopFound)
             {
-                endFound = !EvaluateInstruction(new Instruction(Memory[InstructionPointer]));
+                stopFound = !EvaluateInstruction(new Instruction(Memory[InstructionPointer]));
             }
+        }
+
+        public int GetOutput()
+        {
+            string temp = this.Output;
+            this.Output = "";
+            return int.Parse(temp);
         }
 
         public int GetParameterValue(int parameter, ParameterMode mode)
@@ -93,6 +105,21 @@ namespace AdventOfCode2019
             else
             {
                 throw new NotImplementedException("Unknown Parameter Mode Encountered.");
+            }
+        }
+
+        public bool EnterInput(int inputValue)
+        {
+            Input.Add(inputValue);
+
+            if (IsRunning)
+            {
+                Run();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -122,7 +149,7 @@ namespace AdventOfCode2019
             {
                 if (Input == null || Input.Count == 0)
                 {
-                    throw new Exception("No Input Values Available!");
+                    return false;
                 }
 
                 Memory[Memory[InstructionPointer + 1]] = Input.First();
@@ -139,6 +166,7 @@ namespace AdventOfCode2019
             else if (i.OpCode == IntCodeOpCode.Halt)
             {
                 InstructionPointer += 1;
+                IsRunning = false;
                 return false;
             }
             else if (i.OpCode == IntCodeOpCode.JumpIfTrue)
