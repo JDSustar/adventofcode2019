@@ -12,7 +12,7 @@ namespace AdventOfCode2019Test
         [TestMethod]
         public void Test1()
         {
-            string data = "123456221012";
+            string data = "120056221012";
             SpaceImage si = new SpaceImage(data, 3, 2);
 
             Assert.AreEqual(6, si.CalculateCheckDigit());

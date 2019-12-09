@@ -11,9 +11,9 @@ namespace AdventOfCode2019
         {
             string line = File.ReadAllText(fileLocation);
 
-            var input = new int[1] {1};
+            var input = new long[1] {1};
 
-            IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(line.Split(','), int.Parse), input);
+            IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(line.Split(','), long.Parse), input);
             machine.Run();
 
             Logger.LogMessage(LogLevel.ANSWER, "5A: Machine Output: " + machine.Output);
@@ -23,9 +23,9 @@ namespace AdventOfCode2019
         {
             string line = File.ReadAllText(fileLocation);
 
-            var input = new int[1] { 5 };
+            var input = new long[1] { 5 };
 
-            IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(line.Split(','), int.Parse), input);
+            IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(line.Split(','), long.Parse), input);
             machine.Run();
 
             Logger.LogMessage(LogLevel.ANSWER, "5B: Machine Output: " + machine.Output);

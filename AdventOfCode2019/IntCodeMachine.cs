@@ -17,6 +17,7 @@ namespace AdventOfCode2019
             JustIfFalse = 6,
             LessThan = 7,
             Equals = 8,
+            AdjustRelativeBase = 9,
             Halt = 99,
         }
 
@@ -24,6 +25,7 @@ namespace AdventOfCode2019
         {
             PositionMode = 0,
             ImmediateMode = 1,
+            RelativeMode = 2,
         }
 
         public class Instruction
@@ -33,44 +35,55 @@ namespace AdventOfCode2019
             public ParameterMode SecondParameterMode { get; private set; }
             public ParameterMode ThirdParameterMode { get; private set; }
 
-            public Instruction(int instructionValue)
-            {
-                string instructionValueString = instructionValue.ToString("D5");
+            public string instructionString;
 
-                OpCode = (IntCodeOpCode)int.Parse(instructionValueString.Substring(3, 2));
-                FirstParameterMode = (ParameterMode)int.Parse(instructionValueString.Substring(2, 1));
-                SecondParameterMode = (ParameterMode)int.Parse(instructionValueString.Substring(1, 1));
-                ThirdParameterMode = (ParameterMode)int.Parse(instructionValueString.Substring(0, 1));
+            public Instruction(long instructionValue)
+            {
+                instructionString = instructionValue.ToString("D5");
+
+                OpCode = (IntCodeOpCode)int.Parse(instructionString.Substring(3, 2));
+                FirstParameterMode = (ParameterMode)int.Parse(instructionString.Substring(2, 1));
+                SecondParameterMode = (ParameterMode)int.Parse(instructionString.Substring(1, 1));
+                ThirdParameterMode = (ParameterMode)int.Parse(instructionString.Substring(0, 1));
+            }
+
+            public override string ToString()
+            {
+                return instructionString + ": " + OpCode.ToString() + ": " + FirstParameterMode.ToString() + " - " + SecondParameterMode.ToString() + " - " + ThirdParameterMode.ToString();
             }
         }
 
-        public int[] Memory { get; private set; }
+        public List<long> Memory { get; private set; }
 
         public int InstructionPointer { get; private set; }
+
+        public int CurrentRelativeBase { get; private set; }
 
         public bool IsRunning { get; private set; }
 
         public string Output { get; private set; }
 
-        public List<int> Input { get; private set; }
+        public List<long> Input { get; private set; }
 
-        public IntCodeMachine(int[] memory)
+        public IntCodeMachine(long[] memory)
         {
-            Memory = new List<int>(memory).ToArray();
+            Memory = new List<long>(memory);
+            Memory.AddRange(new long[100000]);
             InstructionPointer = 0;
             Output = "";
+            CurrentRelativeBase = 0;
         }
 
-        public IntCodeMachine(int[] memory, int noun, int verb, int[] input) : this(memory)
+        public IntCodeMachine(long[] memory, int noun, int verb, long[] input) : this(memory)
         {
             Memory[1] = noun;
             Memory[2] = verb;
-            Input = new List<int>(input);
+            Input = new List<long>(input);
         }
 
-        public IntCodeMachine(int[] memory, int[] input) : this(memory)
+        public IntCodeMachine(long[] memory, long[] input) : this(memory)
         {
-            Input = new List<int>(input);
+            Input = new List<long>(input);
         }
 
         public void Run()
@@ -92,15 +105,36 @@ namespace AdventOfCode2019
             return int.Parse(temp);
         }
 
-        public int GetParameterValue(int parameter, ParameterMode mode)
+        public long GetParameterValue(int position, ParameterMode mode)
         {
             if (mode == ParameterMode.PositionMode)
             {
-                return Memory[parameter];
+                return Memory[(int)Memory[position]];
             }
             else if (mode == ParameterMode.ImmediateMode)
             {
-                return parameter;
+                return Memory[position];
+            }
+            else if (mode == ParameterMode.RelativeMode)
+            {
+                return Memory[CurrentRelativeBase + (int)Memory[position]];
+            }
+            else
+            {
+                throw new NotImplementedException("Unknown Parameter Mode Encountered.");
+            }
+        }
+
+        public void SetMemoryValue(int position, ParameterMode mode, long value)
+        {
+            if (mode == ParameterMode.PositionMode)
+            {
+                int resultPosition = (int)Memory[position];
+                Memory[resultPosition] = value;
+            }
+            else if (mode == ParameterMode.RelativeMode)
+            {
+                Memory[CurrentRelativeBase + (int)Memory[position]] = value;
             }
             else
             {
@@ -125,23 +159,21 @@ namespace AdventOfCode2019
 
         public bool EvaluateInstruction(Instruction i)
         {
+            Logger.LogMessage(LogLevel.DEBUG, "Evaluating Instruction at Position: " + InstructionPointer);
+            Logger.LogMessage(LogLevel.DEBUG, i.ToString());
             if (i.OpCode == IntCodeOpCode.Add)
             {
-                int addend1 = GetParameterValue(Memory[InstructionPointer + 1], i.FirstParameterMode);
-                int addend2 = GetParameterValue(Memory[InstructionPointer + 2], i.SecondParameterMode);
-                int resultPosition = Memory[InstructionPointer + 3];
-
-                Memory[resultPosition] = addend1 + addend2;
+                long addend1 = GetParameterValue(InstructionPointer + 1, i.FirstParameterMode);
+                long addend2 = GetParameterValue(InstructionPointer + 2, i.SecondParameterMode);
+                SetMemoryValue(InstructionPointer + 3, i.ThirdParameterMode, addend1 + addend2);
                 InstructionPointer += 4;
                 return true;
             }
             else if (i.OpCode == IntCodeOpCode.Multiply)
             {
-                int factor1 = GetParameterValue(Memory[InstructionPointer + 1], i.FirstParameterMode);
-                int factor2 = GetParameterValue(Memory[InstructionPointer + 2], i.SecondParameterMode);
-                int resultPosition = Memory[InstructionPointer + 3];
-
-                Memory[resultPosition] = factor1 * factor2;
+                long factor1 = GetParameterValue(InstructionPointer + 1, i.FirstParameterMode);
+                long factor2 = GetParameterValue(InstructionPointer + 2, i.SecondParameterMode);
+                SetMemoryValue(InstructionPointer + 3, i.ThirdParameterMode, factor1 * factor2);
                 InstructionPointer += 4;
                 return true;
             }
@@ -152,14 +184,16 @@ namespace AdventOfCode2019
                     return false;
                 }
 
-                Memory[Memory[InstructionPointer + 1]] = Input.First();
+                SetMemoryValue(InstructionPointer + 1, i.FirstParameterMode, Input.First());
+
                 Input.RemoveAt(0);
                 InstructionPointer += 2;
                 return true;
             }
             else if (i.OpCode == IntCodeOpCode.Output)
             {
-                Output += GetParameterValue(Memory[InstructionPointer + 1], i.FirstParameterMode).ToString();
+                Logger.LogMessage(LogLevel.DEBUG, "Int Code Machine Output: " + GetParameterValue(InstructionPointer + 1, i.FirstParameterMode).ToString());
+                Output += GetParameterValue(InstructionPointer + 1, i.FirstParameterMode).ToString();
                 InstructionPointer += 2;
                 return true;
             }
@@ -171,61 +205,65 @@ namespace AdventOfCode2019
             }
             else if (i.OpCode == IntCodeOpCode.JumpIfTrue)
             {
-                if (GetParameterValue(Memory[InstructionPointer + 1], i.FirstParameterMode) == 0)
+                if (GetParameterValue(InstructionPointer + 1, i.FirstParameterMode) == 0)
                 {
                     InstructionPointer += 3;
                 }
                 else
                 {
-                    InstructionPointer = GetParameterValue(Memory[InstructionPointer + 2], i.SecondParameterMode);
+                    InstructionPointer = (int)GetParameterValue(InstructionPointer + 2, i.SecondParameterMode);
                 }
 
                 return true;
             }
             else if (i.OpCode == IntCodeOpCode.JustIfFalse)
             {
-                if (GetParameterValue(Memory[InstructionPointer + 1], i.FirstParameterMode) != 0)
+                if (GetParameterValue(InstructionPointer + 1, i.FirstParameterMode) != 0)
                 {
                     InstructionPointer += 3;
                 }
                 else
                 {
-                    InstructionPointer = GetParameterValue(Memory[InstructionPointer + 2], i.SecondParameterMode);
+                    InstructionPointer = (int)GetParameterValue(InstructionPointer + 2, i.SecondParameterMode);
                 }
 
                 return true;
             }
             else if (i.OpCode == IntCodeOpCode.LessThan)
             {
-                if (GetParameterValue(Memory[InstructionPointer + 1], i.FirstParameterMode) <
-                    GetParameterValue(Memory[InstructionPointer + 2], i.SecondParameterMode))
+                if (GetParameterValue(InstructionPointer + 1, i.FirstParameterMode) <
+                    GetParameterValue(InstructionPointer + 2, i.SecondParameterMode))
                 {
-                    Memory[Memory[InstructionPointer + 3]] = 1;
+                    SetMemoryValue(InstructionPointer + 3, i.ThirdParameterMode, 1);
                 }
                 else
                 {
-                    Memory[Memory[InstructionPointer + 3]] = 0;
+                    SetMemoryValue(InstructionPointer + 3, i.ThirdParameterMode, 0);
                 }
-                 
+
                 InstructionPointer += 4;
                 return true;
             }
             else if (i.OpCode == IntCodeOpCode.Equals)
             {
-                if (GetParameterValue(Memory[InstructionPointer + 1], i.FirstParameterMode) ==
-                    GetParameterValue(Memory[InstructionPointer + 2], i.SecondParameterMode))
+                if (GetParameterValue(InstructionPointer + 1, i.FirstParameterMode) ==
+                    GetParameterValue(InstructionPointer + 2, i.SecondParameterMode))
                 {
-                    int resultPosition = GetParameterValue(Memory[InstructionPointer + 3], i.ThirdParameterMode);
-                    int resultPosition2 = Memory[InstructionPointer + 3];
 
-                    Memory[Memory[InstructionPointer + 3]] = 1;
+                    SetMemoryValue(InstructionPointer + 3, i.ThirdParameterMode, 1);
                 }
                 else
                 {
-                    Memory[Memory[InstructionPointer + 3]] = 0;
+                    SetMemoryValue(InstructionPointer + 3, i.ThirdParameterMode, 0);
                 }
 
                 InstructionPointer += 4;
+                return true;
+            }
+            else if (i.OpCode == IntCodeOpCode.AdjustRelativeBase)
+            {
+                CurrentRelativeBase += (int)GetParameterValue(InstructionPointer + 1, i.FirstParameterMode);
+                InstructionPointer += 2;
                 return true;
             }
             else
