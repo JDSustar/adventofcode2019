@@ -44,9 +44,10 @@ namespace AdventOfCode2019
                 this.parent = parent;
                 imageLayerData = new int[parent.Width, parent.Height];
 
-                for (var w = 0; w < parent.Width; w++)
+
+                for (var h = 0; h < parent.Height; h++)
                 {
-                    for (var h = 0; h < parent.Height; h++)
+                    for (var w = 0; w < parent.Width; w++)
                     {
                         imageLayerData[w, h] = int.Parse(data[0].ToString());
                         if (data.Length > 1) data = data.Substring(1);
@@ -134,11 +135,11 @@ namespace AdventOfCode2019
                 {
                     if (FinalImage.imageLayerData[w, h] == 0)
                     {
-                        sb.Append("0");
+                        sb.Append(" ");
                     }
                     else if (FinalImage.imageLayerData[w, h] == 1)
                     {
-                        sb.Append("1");
+                        sb.Append("0");
                     }
                     else
                     {
