@@ -22,7 +22,7 @@ namespace AdventOfCode2019
                     validPasswords++;
             }
 
-            Logger.LogMessage(LogLevel.ANSWER, "Day 4A: Valid Passwords in Range: " + validPasswords);
+            Logger.LogMessage(LogLevel.ANSWER, "4A: Valid Passwords in Range: " + validPasswords);
         }
 
         public static void ExecuteStarTwo(string input = "108457-562041")
@@ -40,7 +40,7 @@ namespace AdventOfCode2019
                     validPasswords++;
             }
 
-            Logger.LogMessage(LogLevel.ANSWER, "Day 4B: Valid Passwords in Range: " + validPasswords);
+            Logger.LogMessage(LogLevel.ANSWER, "4B: Valid Passwords in Range: " + validPasswords);
         }
 
         public static bool IsValidPassword(string password, bool largerGroupAllowed = true)
