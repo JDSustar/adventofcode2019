@@ -11,7 +11,7 @@ namespace AdventOfCode2019
 {
     public static class Day3
     {
-        public static void ExecuteStarOne(string fileLocation = "Day3/Day3.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day3.txt")
         {
             string[] lines = File.ReadAllLines(fileLocation);
 
@@ -20,7 +20,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "3A: Closest Intersection: " + wp.GetClosestIntersectionDistance());
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day3/Day3.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day3.txt")
         {
             string[] lines = File.ReadAllLines(fileLocation);
 

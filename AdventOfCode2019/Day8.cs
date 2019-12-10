@@ -9,7 +9,7 @@ namespace AdventOfCode2019
 {
     public static class Day8
     {
-        public static void ExecuteStarOne(string fileLocation = "Day8/Day8.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day8.txt")
         {
             string data = File.ReadAllText(fileLocation);
 
@@ -18,7 +18,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "8A: Check Digit: " + si.CalculateCheckDigit());
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day8/Day8.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day8.txt")
         {
             string data = File.ReadAllText(fileLocation);
 

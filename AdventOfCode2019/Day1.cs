@@ -22,7 +22,7 @@ namespace AdventOfCode2019
                 return fuelRequired + GetFuelRequiredForFuel(fuelRequired);
         }
 
-        public static void ExecuteStarOne(string fileLocation = "Day1/Day1.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day1.txt")
         {
             string[] lines = File.ReadAllLines(fileLocation);
 
@@ -38,7 +38,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "1A: Total Fuel Required: " + totalFuelRequired.ToString());
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day1/Day1.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day1.txt")
         {
             string[] lines = File.ReadAllLines(fileLocation);
 

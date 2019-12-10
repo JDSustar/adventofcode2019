@@ -8,7 +8,7 @@ namespace AdventOfCode2019
 {
     public static class Day9
     {
-        public static void ExecuteStarOne(string fileLocation = "Day9/Day9.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day9.txt")
         {
             long[] program = File.ReadAllText(fileLocation).Split(',').Select(long.Parse).ToArray();
             long[] input = new List<long>() { 1 }.ToArray();
@@ -19,7 +19,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "9A: BOOST Keycode: " + icm.Output);
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day9/Day9.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day9.txt")
         {
             long[] program = File.ReadAllText(fileLocation).Split(',').Select(long.Parse).ToArray();
             long[] input = new List<long>() { 2 }.ToArray();

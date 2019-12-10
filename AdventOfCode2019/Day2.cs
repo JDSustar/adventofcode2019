@@ -9,7 +9,7 @@ namespace AdventOfCode2019
 {
     public static class Day2
     {
-        public static void ExecuteStarOne(string fileLocation = "Day2/Day2.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day2.txt")
         {
             string line = File.ReadAllText(fileLocation);
 
@@ -21,7 +21,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "2A: Value At Position 0: " + intCode.Memory[0].ToString());
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day2/Day2.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day2.txt")
         {
             string line = File.ReadAllText(fileLocation);
 

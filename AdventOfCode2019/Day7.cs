@@ -8,7 +8,7 @@ namespace AdventOfCode2019
 {
     public static class Day7
     {
-        public static void ExecuteStarOne(string fileLocation = "Day7/Day7.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day7.txt")
         {
             long[] programMemory = File.ReadAllText(fileLocation).Split(',').Select(long.Parse).ToArray();
 
@@ -29,7 +29,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "7A: Largest Output: " + largestOutput);
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day7/Day7.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day7.txt")
         {
             long[] programMemory = File.ReadAllText(fileLocation).Split(',').Select(long.Parse).ToArray();
 

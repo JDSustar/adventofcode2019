@@ -7,7 +7,7 @@ namespace AdventOfCode2019
 {
     public static class Day6
     {
-        public static void ExecuteStarOne(string fileLocation = "Day6/Day6.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day6.txt")
         {
             string[] lines = File.ReadAllLines(fileLocation);
 
@@ -16,7 +16,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "6A: Total Orbits: " + objectMap.GetTotalOrbits());
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day6/Day6.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day6.txt")
         {
             string[] lines = File.ReadAllLines(fileLocation);
 

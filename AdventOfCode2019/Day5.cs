@@ -7,7 +7,7 @@ namespace AdventOfCode2019
 {
     public static class Day5
     {
-        public static void ExecuteStarOne(string fileLocation = "Day5/Day5.txt")
+        public static void ExecuteStarOne(string fileLocation = "PuzzleInput/Day5.txt")
         {
             string line = File.ReadAllText(fileLocation);
 
@@ -19,7 +19,7 @@ namespace AdventOfCode2019
             Logger.LogMessage(LogLevel.ANSWER, "5A: Machine Output: " + machine.Output);
         }
 
-        public static void ExecuteStarTwo(string fileLocation = "Day5/Day5.txt")
+        public static void ExecuteStarTwo(string fileLocation = "PuzzleInput/Day5.txt")
         {
             string line = File.ReadAllText(fileLocation);
 
