@@ -40,16 +40,22 @@ namespace AdventOfCode2019
 
         public static double GetAngleInRadians(int x, int y)
         {
+            // Get angle as defined on https://docs.microsoft.com/en-us/dotnet/api/system.math.atan2?view=netframework-4.8
             double angle = Math.Atan2(y, x);
+
+            // Shift the coordinate system counter-clockwise 90 degrees
             angle = angle - (Math.PI / 2);
 
+            // Adjust everything to be positive
             if (angle < 0)
             {
                 angle = (Math.PI * 2) + angle;
             }
 
+            // Reverse it so the coordinate system is clockwise
             angle = (2 * Math.PI) - angle;
 
+            // Ensure nothing is >= 2pi
             if (angle >= (Math.PI) * 2)
             {
                 angle = angle - (Math.PI * 2);
