@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace AdventOfCode2019
@@ -61,7 +62,7 @@ namespace AdventOfCode2019
 
         public bool IsRunning { get; private set; }
 
-        public string Output { get; private set; }
+        public List<long> Output { get; private set; }
 
         public List<long> Input { get; private set; }
 
@@ -70,8 +71,9 @@ namespace AdventOfCode2019
             Memory = new List<long>(memory);
             Memory.AddRange(new long[100000]);
             InstructionPointer = 0;
-            Output = "";
+            Output = new List<long>();
             CurrentRelativeBase = 0;
+            Input = new List<long>();
         }
 
         public IntCodeMachine(long[] memory, int noun, int verb, long[] input) : this(memory)
@@ -98,11 +100,11 @@ namespace AdventOfCode2019
             }
         }
 
-        public int GetOutput()
+        public long GetNextOutput()
         {
-            string temp = this.Output;
-            this.Output = "";
-            return int.Parse(temp);
+            long o = Output.FirstOrDefault();
+            Output.RemoveAt(0);
+            return o;
         }
 
         public long GetParameterValue(int position, ParameterMode mode)
@@ -193,7 +195,7 @@ namespace AdventOfCode2019
             else if (i.OpCode == IntCodeOpCode.Output)
             {
                 Logger.LogMessage(LogLevel.DEBUG, "Int Code Machine Output: " + GetParameterValue(InstructionPointer + 1, i.FirstParameterMode).ToString());
-                Output += GetParameterValue(InstructionPointer + 1, i.FirstParameterMode).ToString();
+                Output.Add(GetParameterValue(InstructionPointer + 1, i.FirstParameterMode));
                 InstructionPointer += 2;
                 return true;
             }

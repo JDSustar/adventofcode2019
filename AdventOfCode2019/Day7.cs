@@ -76,25 +76,25 @@ namespace AdventOfCode2019
         {
             a.EnterInput(0);
             a.Run();
-            b.EnterInput(a.GetOutput());
+            b.EnterInput((int)a.GetNextOutput());
             b.Run();
-            c.EnterInput(b.GetOutput());
+            c.EnterInput((int)b.GetNextOutput());
             c.Run();
-            d.EnterInput(c.GetOutput());
+            d.EnterInput((int)c.GetNextOutput());
             d.Run();
-            e.EnterInput(d.GetOutput());
+            e.EnterInput((int)d.GetNextOutput());
             e.Run();
 
             while (e.IsRunning)
             {
-                a.EnterInput(e.GetOutput());
-                b.EnterInput(a.GetOutput());
-                c.EnterInput(b.GetOutput());
-                d.EnterInput(c.GetOutput());
-                e.EnterInput(d.GetOutput());
+                a.EnterInput((int)e.GetNextOutput());
+                b.EnterInput((int)a.GetNextOutput());
+                c.EnterInput((int)b.GetNextOutput());
+                d.EnterInput((int)c.GetNextOutput());
+                e.EnterInput((int)d.GetNextOutput());
             }
 
-            this.Output = e.GetOutput();
+            this.Output = (int)e.GetNextOutput();
         }
     }
 }

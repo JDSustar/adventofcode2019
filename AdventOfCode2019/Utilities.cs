@@ -63,6 +63,14 @@ namespace AdventOfCode2019
 
             return angle;
         }
+
+        // https://stackoverflow.com/a/9894743
+        public static T[,] GetNew2DArray<T>(int x, int y, T initialValue)
+        {
+            T[,] nums = new T[x, y];
+            for (int i = 0; i < x * y; i++) nums[i % x, i / x] = initialValue;
+            return nums;
+        }
     }
 
     public class Point
