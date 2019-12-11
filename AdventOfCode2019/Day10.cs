@@ -34,7 +34,7 @@ namespace AdventOfCode2019
                 Logger.LogMessage(LogLevel.DEBUG, ab.ToString());
             }
 
-            Logger.LogMessage(LogLevel.ANSWER, "10A: Last Asteroid: " + ab.LastVaporizedAsteroid + " Value: " + ab.LastVaporizedAsteroid.X * 100 + ab.LastVaporizedAsteroid.Y);
+            Logger.LogMessage(LogLevel.ANSWER, "10A: Last Asteroid: " + ab.LastVaporizedAsteroid + " Value: " + (ab.LastVaporizedAsteroid.X * 100 + ab.LastVaporizedAsteroid.Y));
         }
     }
 
@@ -199,8 +199,8 @@ namespace AdventOfCode2019
 
         private void VaporizeAt(Point asteroidToVaporize)
         {
-            Logger.LogMessage(LogLevel.DEBUG, "Vaporizing: " + asteroidToVaporize);
-            CurrentLaserAngle = AsteroidAngles[asteroidToVaporize]+.0001;
+            Logger.LogMessage(LogLevel.DEBUG, "Vaporizing: " + asteroidToVaporize + " At Angle: " + AsteroidAngles[asteroidToVaporize]);
+            CurrentLaserAngle = AsteroidAngles[asteroidToVaporize]+.00000001;
             Asteroids.Remove(asteroidToVaporize);
             AsteroidAngles.Remove(asteroidToVaporize);
             LastVaporizedAsteroid = asteroidToVaporize;
@@ -210,29 +210,29 @@ namespace AdventOfCode2019
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int h = 0; h < MaxPoint.Y; h++)
+            for (int h = 0; h <= MaxPoint.Y; h++)
             {
-                for (int w = 0; w < MaxPoint.X; w++)
+                for (int w = 0; w <= MaxPoint.X; w++)
                 {
                     var p = new Point(w, h);
                     if (Asteroids.Contains(p))
                     {
                         if (Equals(p, LaserPosition))
                         {
-                            sb.Append("0");
+                            sb.Append("0 ");
                         }
                         else
                         {
-                            sb.Append("X");
+                            sb.Append("X ");
                         }
                     }
                     else if (Equals(p, LastVaporizedAsteroid))
                     {
-                        sb.Append("!");
+                        sb.Append("! ");
                     }
                     else
                     {
-                        sb.Append(".");
+                        sb.Append(". ");
                     }
                 }
 
