@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AdventOfCode2019;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +21,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(memory.Split(','), long.Parse), input);
             machine.Run();
 
-            Assert.AreEqual("999", machine.Output);
+            Assert.AreEqual(999, machine.GetNextOutput());
         }
 
         [TestMethod]
@@ -34,7 +35,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(memory.Split(','), long.Parse), input);
             machine.Run();
 
-            Assert.AreEqual("1000", machine.Output);
+            Assert.AreEqual(1000, machine.GetNextOutput());
         }
 
         [TestMethod]
@@ -48,7 +49,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(memory.Split(','), long.Parse), input);
             machine.Run();
 
-            Assert.AreEqual("1001", machine.Output);
+            Assert.AreEqual(1001, machine.GetNextOutput());
         }
 
         [TestMethod]
@@ -61,7 +62,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine machine = new IntCodeMachine(Array.ConvertAll(memory.Split(','), long.Parse), input);
             machine.Run();
 
-            Assert.AreEqual("1", machine.Output);
+            Assert.AreEqual(1, machine.GetNextOutput());
         }
     }
 }

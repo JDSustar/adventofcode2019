@@ -27,7 +27,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine icm = new IntCodeMachine(program);
             icm.Run();
 
-            Assert.AreEqual("109", icm.Output);
+            Assert.AreEqual(109, icm.GetNextOutput());
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine icm = new IntCodeMachine(program);
             icm.Run();
 
-            Assert.AreEqual("1091204-1100110011001008100161011006101099", icm.Output);
+            Assert.AreEqual(109, icm.GetNextOutput());
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine icm = new IntCodeMachine(program);
             icm.Run();
 
-            Assert.AreEqual(16, icm.Output.Length);
+            Assert.AreEqual(1219070632396864, icm.GetNextOutput());
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace AdventOfCode2019Test
             IntCodeMachine icm = new IntCodeMachine(program);
             icm.Run();
 
-            Assert.AreEqual("1125899906842624", icm.Output);
+            Assert.AreEqual(1125899906842624, icm.GetNextOutput());
         }
     }
 }
