@@ -6,7 +6,7 @@ namespace AdventOfCode2019
     {
         static void Main(string[] args)
         {
-            Logger.CURRENT_LOG_LEVEL = LogLevel.DEBUG;
+            Logger.CURRENT_LOG_LEVEL = LogLevel.ANSWER;
             //Day1.ExecuteStarOne();
             //Day1.ExecuteStarTwo();
             //Day2.ExecuteStarOne();
@@ -29,8 +29,12 @@ namespace AdventOfCode2019
             //Day10.ExecuteStarTwo();
             //Day11.ExecuteStarOne();
             //Day11.ExecuteStarTwo();
-            Day12.ExecuteStarOne();
-            Day12.ExecuteStarTwo();
+            //Day12.ExecuteStarOne();
+            //Day12.ExecuteStarTwo();
+            //Day13.ExecuteStarOne();
+            Day13.ExecuteStarTwo();
+
+
         }
     }
 }
